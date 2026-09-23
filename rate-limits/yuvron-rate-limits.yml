@@ -1,0 +1,53 @@
+name: Football API (Yuvron) rate limits
+generated: '2026-09-23'
+method: searched
+source: https://rapidapi.com/yuvr99-WHTEITBQbOc/api/football-leagues1/pricing
+note: 'Quotas are enforced by RapidAPI per subscription plan, read from the JavaScript-rendered RapidAPI pricing page in a headless browser (check-economics.py cannot see the rendered text from a plain
+  fetch). The provider blog corroborates the free tier: "500 requests a month is enough to build against" (https://football-api.yuvron.online/blog/not-burning-your-free-tier). No rate-limit response headers
+  or 429 behaviour are documented; the origin documents Cache-Control lifetimes and ETag/If-None-Match (a 304 saves bandwidth, not quota).'
+limit_count: 5
+limits:
+- name: Basic monthly quota
+  limit_text: 500 / Month
+  max: 500
+  limit: 500
+  window: month
+  plan: Basic
+  scope: per subscription
+  kind: quota
+  enforcement: Hard Limit
+- name: Basic hourly rate limit
+  limit_text: 1000 requests per hour
+  max: 1000
+  limit: 1000
+  window: hour
+  plan: Basic
+  scope: per subscription
+- name: Pro monthly quota
+  limit_text: 5,000 / Month
+  max: 5000
+  limit: 5000
+  window: month
+  plan: Pro
+  scope: per subscription
+  kind: quota
+  overage_text: + $0.0003
+- name: Ultra monthly quota
+  limit_text: 50,000 / Month
+  max: 50000
+  limit: 50000
+  window: month
+  plan: Ultra
+  scope: per subscription
+  kind: quota
+  overage_text: + $0.0003
+- name: Mega monthly quota
+  limit_text: 500,000 / Month
+  max: 500000
+  limit: 500000
+  window: month
+  plan: Mega
+  scope: per subscription
+  kind: quota
+  overage_text: + $0.00003
+headers: []

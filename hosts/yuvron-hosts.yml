@@ -1,0 +1,49 @@
+generated: '2026-09-23'
+method: derived
+source: the pre-flight dossier, apis.yml pointers, spec servers, well-known, vendors -- nothing fetched here
+generator: derive-hosts.py
+summary:
+  hosts: 3
+  own: 1
+  other_domain: 0
+  platform: 2
+  roles:
+  - identity
+  - other
+  - website
+hosts:
+- host: football-api.yuvron.online
+  found_by:
+  - pointer
+  - apis[]
+  types:
+  - Website
+  - APIsJSON
+  - Documentation
+  - APIReference
+  - Blog
+  - FAQ
+  serves:
+  - docs
+  registrable_domain: yuvron.online
+  role: website
+  relation: own
+- host: football-leagues1.p.rapidapi.com
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - api
+  registrable_domain: rapidapi.com
+  role: other
+  relation: platform
+- host: rapidapi.com
+  found_by:
+  - pointer
+  types:
+  - Pricing
+  - SignUp
+  serves: []
+  registrable_domain: rapidapi.com
+  role: identity
+  relation: platform

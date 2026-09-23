@@ -1,0 +1,78 @@
+name: Football API (Yuvron) plans
+generated: '2026-09-23'
+method: searched
+source: https://rapidapi.com/yuvr99-WHTEITBQbOc/api/football-leagues1/pricing
+note: 'Read from the RapidAPI pricing page for the umbrella listing football-leagues1 (provider account yuvr99-WHTEITBQbOc, linked from football-api.yuvron.online), rendered in a headless browser 2026-09-23
+  and cross-checked against the billing-plan objects embedded in the page. The page is JavaScript-rendered: a plain fetch returns ~1.7K characters of shell with no prices, so check-economics.py cannot verify
+  these quotes from here. Each single-competition listing is priced separately and was not read. Every plan also carries RapidAPI''s "Bandwidth Platform Fee 10240MB / Month + $0.001 per 1MB". FAQ: "Paid
+  plans raise the request limit rather than unlocking data".'
+audience: developer-api
+pricing_basis: tiered-subscription
+published: true
+delivery:
+  delivery: managed
+plan_count: 4
+currency: USD
+plans:
+- name: Basic
+  description: For individuals who just want the essentials to get started quickly
+  price: 0
+  price_text: $0.00
+  billing_period: monthly
+  features:
+  - Same endpoints as the paid plans
+  limits:
+  - item: Requests
+    amount: 500
+    period: monthly
+    limit_type: hard
+    limit_text: 500 / Month
+  - item: Rate Limit
+    limit_text: 1000 requests per hour
+    amount: 1000
+    period: hour
+  overage: 0
+  overage_text: Hard Limit
+- name: Pro
+  description: For professionals who require more volume for their application
+  price: 5
+  price_text: $5.00
+  billing_period: monthly
+  features: []
+  limits:
+  - item: Requests
+    amount: 5000
+    period: monthly
+    limit_type: soft
+    limit_text: 5,000 / Month
+  overage: 0.0003
+  overage_text: + $0.0003
+- name: Ultra
+  description: For professionals who work on larger scale applications
+  price: 10
+  price_text: $10.00
+  billing_period: monthly
+  recommended: true
+  features: []
+  limits:
+  - item: Requests
+    amount: 50000
+    period: monthly
+    limit_type: soft
+    limit_text: 50,000 / Month
+  overage: 0.0003
+  overage_text: + $0.0003
+- name: Mega
+  description: For businesses who need high volume, production-level use
+  price: 20
+  price_text: $20.00
+  billing_period: monthly
+  features: []
+  limits:
+  - item: Requests
+    amount: 500000
+    period: monthly
+    limit_type: soft
+    limit_text: 500,000 / Month
+  overage: 3.0e-05
+  overage_text: + $0.00003

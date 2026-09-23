@@ -1,0 +1,3827 @@
+openapi: 3.0.3
+info:
+  title: Football API
+  version: 1.0.0
+  description: 'Standings, fixtures, results, live scores, lineups, events, player and team stats for 11 competitions: Premier League, LaLiga, Serie A, Bundesliga, Ligue 1, Eredivisie, Primeira Liga, EFL Championship, UEFA Champions League, UEFA Europa League, UEFA Conference League. Season-scoped endpoints accept `?season=2025-26` and default to the current season. Keys are issued through RapidAPI.'
+components:
+  securitySchemes:
+    rapidApiKey:
+      type: apiKey
+      in: header
+      name: X-RapidAPI-Key
+      description: Your RapidAPI application key
+    rapidApiHost:
+      type: apiKey
+      in: header
+      name: X-RapidAPI-Host
+      description: Always football-leagues1.p.rapidapi.com
+    apiKey:
+      type: apiKey
+      in: header
+      name: X-Api-Key
+      description: A key issued directly, for the origin server
+  schemas: {}
+paths:
+  /competitions:
+    get:
+      summary: All competitions
+      tags:
+      - competitions
+      description: Every competition this API covers, with the seasons available for each.
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        slug:
+                          type: string
+                        name:
+                          type: string
+                        country:
+                          type: string
+                          nullable: true
+                        type:
+                          type: string
+                          enum:
+                          - league
+                          - cup
+                        logoUrl:
+                          type: string
+                        currentSeason:
+                          type: string
+                          nullable: true
+                        seasons:
+                          type: array
+                          items:
+                            type: string
+                      required:
+                      - slug
+                      - name
+                      - country
+                      - type
+                      - logoUrl
+                      - currentSeason
+                      - seasons
+                      additionalProperties: false
+                  meta:
+                    type: object
+                    properties:
+                      season:
+                        type: string
+                      page:
+                        type: number
+                      limit:
+                        type: number
+                      total:
+                        type: number
+                    additionalProperties: false
+                required:
+                - data
+                - meta
+                additionalProperties: false
+  /players/{id}:
+    get:
+      summary: Player career
+      tags:
+      - players
+      description: A player across every competition and season we hold, with the clubs they appeared for.
+      parameters:
+      - schema:
+          type: string
+        in: path
+        name: id
+        required: true
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                      slug:
+                        type: string
+                        nullable: true
+                      name:
+                        type: string
+                      photoUrl:
+                        type: string
+                      shortName:
+                        type: string
+                        nullable: true
+                      position:
+                        type: string
+                        nullable: true
+                      detailedPosition:
+                        type: string
+                        nullable: true
+                      birthdate:
+                        type: string
+                        nullable: true
+                      age:
+                        type: number
+                        nullable: true
+                      height:
+                        type: number
+                        nullable: true
+                      nationality:
+                        type: object
+                        properties:
+                          id:
+                            type: number
+                          name:
+                            type: string
+                        required:
+                        - id
+                        - name
+                        additionalProperties: false
+                        nullable: true
+                      team:
+                        type: object
+                        properties:
+                          id:
+                            type: number
+                          slug:
+                            type: string
+                            nullable: true
+                          name:
+                            type: string
+                          shortName:
+                            type: string
+                            nullable: true
+                          code:
+                            type: string
+                            nullable: true
+                          crestUrl:
+                            type: string
+                        required:
+                        - id
+                        - slug
+                        - name
+                        - shortName
+                        - code
+                        - crestUrl
+                        additionalProperties: false
+                        nullable: true
+                      shirtNumber:
+                        type: number
+                        nullable: true
+                      career:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            competition:
+                              type: string
+                            season:
+                              type: string
+                            team:
+                              type: object
+                              properties:
+                                id:
+                                  type: number
+                                slug:
+                                  type: string
+                                  nullable: true
+                                name:
+                                  type: string
+                                shortName:
+                                  type: string
+                                  nullable: true
+                                code:
+                                  type: string
+                                  nullable: true
+                                crestUrl:
+                                  type: string
+                              required:
+                              - id
+                              - slug
+                              - name
+                              - shortName
+                              - code
+                              - crestUrl
+                              additionalProperties: false
+                            stats:
+                              type: object
+                              properties:
+                                appearances:
+                                  type: number
+                                starts:
+                                  type: number
+                                minutes:
+                                  type: number
+                                goals:
+                                  type: number
+                                assists:
+                                  type: number
+                                penalties:
+                                  type: number
+                                ownGoals:
+                                  type: number
+                                yellowCards:
+                                  type: number
+                                redCards:
+                                  type: number
+                                avgRating:
+                                  type: number
+                                  nullable: true
+                              required:
+                              - appearances
+                              - starts
+                              - minutes
+                              - goals
+                              - assists
+                              - penalties
+                              - ownGoals
+                              - yellowCards
+                              - redCards
+                              - avgRating
+                              additionalProperties: false
+                          required:
+                          - competition
+                          - season
+                          - team
+                          - stats
+                          additionalProperties: false
+                    required:
+                    - id
+                    - slug
+                    - name
+                    - photoUrl
+                    - shortName
+                    - position
+                    - detailedPosition
+                    - birthdate
+                    - age
+                    - height
+                    - nationality
+                    - team
+                    - shirtNumber
+                    - career
+                    additionalProperties: false
+                  meta:
+                    type: object
+                    properties:
+                      season:
+                        type: string
+                      page:
+                        type: number
+                      limit:
+                        type: number
+                      total:
+                        type: number
+                    additionalProperties: false
+                required:
+                - data
+                - meta
+                additionalProperties: false
+  /matches/live:
+    get:
+      summary: Live matches
+      tags:
+      - matches
+      description: Matches in play right now, with the score and the minute. Updated every 30 seconds.
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                        competition:
+                          type: string
+                        season:
+                          type: string
+                        stage:
+                          type: string
+                          nullable: true
+                        round:
+                          type: number
+                          nullable: true
+                        kickoff:
+                          type: string
+                          format: date-time
+                        status:
+                          type: string
+                          enum:
+                          - scheduled
+                          - live
+                          - halftime
+                          - finished
+                          - postponed
+                          - cancelled
+                        minute:
+                          type: number
+                          nullable: true
+                        homeTeam:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            slug:
+                              type: string
+                              nullable: true
+                            name:
+                              type: string
+                            shortName:
+                              type: string
+                              nullable: true
+                            code:
+                              type: string
+                              nullable: true
+                            crestUrl:
+                              type: string
+                          required:
+                          - id
+                          - slug
+                          - name
+                          - shortName
+                          - code
+                          - crestUrl
+                          additionalProperties: false
+                        awayTeam:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            slug:
+                              type: string
+                              nullable: true
+                            name:
+                              type: string
+                            shortName:
+                              type: string
+                              nullable: true
+                            code:
+                              type: string
+                              nullable: true
+                            crestUrl:
+                              type: string
+                          required:
+                          - id
+                          - slug
+                          - name
+                          - shortName
+                          - code
+                          - crestUrl
+                          additionalProperties: false
+                        score:
+                          type: object
+                          properties:
+                            home:
+                              type: number
+                              nullable: true
+                            away:
+                              type: number
+                              nullable: true
+                          required:
+                          - home
+                          - away
+                          additionalProperties: false
+                        venue:
+                          type: string
+                          nullable: true
+                      required:
+                      - id
+                      - competition
+                      - season
+                      - stage
+                      - round
+                      - kickoff
+                      - status
+                      - minute
+                      - homeTeam
+                      - awayTeam
+                      - score
+                      - venue
+                      additionalProperties: false
+                  meta:
+                    type: object
+                    properties:
+                      season:
+                        type: string
+                      page:
+                        type: number
+                      limit:
+                        type: number
+                      total:
+                        type: number
+                    additionalProperties: false
+                required:
+                - data
+                - meta
+                additionalProperties: false
+  /search:
+    get:
+      summary: Search
+      tags:
+      - search
+      description: Find teams and players by name across every competition.
+      parameters:
+      - schema:
+          type: string
+          minLength: 2
+          maxLength: 50
+        in: query
+        name: q
+        required: true
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      teams:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            slug:
+                              type: string
+                              nullable: true
+                            name:
+                              type: string
+                            shortName:
+                              type: string
+                              nullable: true
+                            code:
+                              type: string
+                              nullable: true
+                            crestUrl:
+                              type: string
+                          required:
+                          - id
+                          - slug
+                          - name
+                          - shortName
+                          - code
+                          - crestUrl
+                          additionalProperties: false
+                      players:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            slug:
+                              type: string
+                              nullable: true
+                            name:
+                              type: string
+                            photoUrl:
+                              type: string
+                          required:
+                          - id
+                          - slug
+                          - name
+                          - photoUrl
+                          additionalProperties: false
+                    required:
+                    - teams
+                    - players
+                    additionalProperties: false
+                  meta:
+                    type: object
+                    properties:
+                      season:
+                        type: string
+                      page:
+                        type: number
+                      limit:
+                        type: number
+                      total:
+                        type: number
+                    additionalProperties: false
+                required:
+                - data
+                - meta
+                additionalProperties: false
+  /{competition}/:
+    get:
+      summary: Competition overview
+      tags:
+      - competition
+      description: Slug, name, country, type and the seasons available for this competition.
+      parameters:
+      - schema:
+          type: string
+        in: path
+        name: competition
+        required: true
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      slug:
+                        type: string
+                      name:
+                        type: string
+                      country:
+                        type: string
+                        nullable: true
+                      type:
+                        type: string
+                        enum:
+                        - league
+                        - cup
+                      logoUrl:
+                        type: string
+                      currentSeason:
+                        type: string
+                        nullable: true
+                      seasons:
+                        type: array
+                        items:
+                          type: string
+                    required:
+                    - slug
+                    - name
+                    - country
+                    - type
+                    - logoUrl
+                    - currentSeason
+                    - seasons
+                    additionalProperties: false
+                  meta:
+                    type: object
+                    properties:
+                      season:
+                        type: string
+                      page:
+                        type: number
+                      limit:
+                        type: number
+                      total:
+                        type: number
+                    additionalProperties: false
+                required:
+                - data
+                - meta
+                additionalProperties: false
+  /{competition}/standings:
+    get:
+      summary: League table
+      tags:
+      - standings
+      description: 'The table for a season, with played, won, drawn, lost, goals, goal difference, points and recent form. Ordered by the competition''s own tie-break rules: head-to-head first in Spain, Italy and Portugal, goal difference first in England, France, Germany and the Netherlands.'
+      parameters:
+      - schema:
+          type: string
+          pattern: ^\d{4}-\d{2}$
+        in: query
+        name: season
+        required: false
+        description: Season label, e.g. 2025-26. Defaults to the current season.
+      - schema:
+          type: string
+        in: path
+        name: competition
+        required: true
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        position:
+                          type: number
+                        team:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            slug:
+                              type: string
+                              nullable: true
+                            name:
+                              type: string
+                            shortName:
+                              type: string
+                              nullable: true
+                            code:
+                              type: string
+                              nullable: true
+                            crestUrl:
+                              type: string
+                          required:
+                          - id
+                          - slug
+                          - name
+                          - shortName
+                          - code
+                          - crestUrl
+                          additionalProperties: false
+                        played:
+                          type: number
+                        won:
+                          type: number
+                        drawn:
+                          type: number
+                        lost:
+                          type: number
+                        goalsFor:
+                          type: number
+                        goalsAgainst:
+                          type: number
+                        goalDiff:
+                          type: number
+                        points:
+                          type: number
+                        form:
+                          type: string
+                        zone:
+                          type: string
+                          nullable: true
+                      required:
+                      - position
+                      - team
+                      - played
+                      - won
+                      - drawn
+                      - lost
+                      - goalsFor
+                      - goalsAgainst
+                      - goalDiff
+                      - points
+                      - form
+                      - zone
+                      additionalProperties: false
+                  meta:
+                    type: object
+                    properties:
+                      season:
+                        type: string
+                      page:
+                        type: number
+                      limit:
+                        type: number
+                      total:
+                        type: number
+                    additionalProperties: false
+                required:
+                - data
+                - meta
+                additionalProperties: false
+  /{competition}/teams:
+    get:
+      summary: Teams in a season
+      tags:
+      - teams
+      description: Every team taking part, with slug, names and country.
+      parameters:
+      - schema:
+          type: string
+          pattern: ^\d{4}-\d{2}$
+        in: query
+        name: season
+        required: false
+        description: Season label, e.g. 2025-26. Defaults to the current season.
+      - schema:
+          type: string
+        in: path
+        name: competition
+        required: true
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                        slug:
+                          type: string
+                          nullable: true
+                        name:
+                          type: string
+                        shortName:
+                          type: string
+                          nullable: true
+                        code:
+                          type: string
+                          nullable: true
+                        crestUrl:
+                          type: string
+                        longName:
+                          type: string
+                          nullable: true
+                        country:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            name:
+                              type: string
+                          required:
+                          - id
+                          - name
+                          additionalProperties: false
+                          nullable: true
+                        colors:
+                          type: object
+                          properties:
+                            home:
+                              type: string
+                              nullable: true
+                            away:
+                              type: string
+                              nullable: true
+                          required:
+                          - home
+                          - away
+                          additionalProperties: false
+                        coach:
+                          type: string
+                          nullable: true
+                      required:
+                      - id
+                      - slug
+                      - name
+                      - shortName
+                      - code
+                      - crestUrl
+                      - longName
+                      - country
+                      - colors
+                      - coach
+                      additionalProperties: false
+                  meta:
+                    type: object
+                    properties:
+                      season:
+                        type: string
+                      page:
+                        type: number
+                      limit:
+                        type: number
+                      total:
+                        type: number
+                    additionalProperties: false
+                required:
+                - data
+                - meta
+                additionalProperties: false
+  /{competition}/teams/{id}:
+    get:
+      summary: One team
+      tags:
+      - teams
+      description: A team by numeric id or slug.
+      parameters:
+      - schema:
+          type: string
+          pattern: ^\d{4}-\d{2}$
+        in: query
+        name: season
+        required: false
+        description: Season label, e.g. 2025-26. Defaults to the current season.
+      - schema:
+          type: string
+        in: path
+        name: competition
+        required: true
+      - schema:
+          type: string
+        in: path
+        name: id
+        required: true
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                      slug:
+                        type: string
+                        nullable: true
+                      name:
+                        type: string
+                      shortName:
+                        type: string
+                        nullable: true
+                      code:
+                        type: string
+                        nullable: true
+                      crestUrl:
+                        type: string
+                      longName:
+                        type: string
+                        nullable: true
+                      country:
+                        type: object
+                        properties:
+                          id:
+                            type: number
+                          name:
+                            type: string
+                        required:
+                        - id
+                        - name
+                        additionalProperties: false
+                        nullable: true
+                      colors:
+                        type: object
+                        properties:
+                          home:
+                            type: string
+                            nullable: true
+                          away:
+                            type: string
+                            nullable: true
+                        required:
+                        - home
+                        - away
+                        additionalProperties: false
+                      coach:
+                        type: string
+                        nullable: true
+                    required:
+                    - id
+                    - slug
+                    - name
+                    - shortName
+                    - code
+                    - crestUrl
+                    - longName
+                    - country
+                    - colors
+                    - coach
+                    additionalProperties: false
+                  meta:
+                    type: object
+                    properties:
+                      season:
+                        type: string
+                      page:
+                        type: number
+                      limit:
+                        type: number
+                      total:
+                        type: number
+                    additionalProperties: false
+                required:
+                - data
+                - meta
+                additionalProperties: false
+  /{competition}/teams/{id}/squad:
+    get:
+      summary: Squad
+      tags:
+      - teams
+      description: The current squad with shirt numbers, positions, age and nationality.
+      parameters:
+      - schema:
+          type: string
+          pattern: ^\d{4}-\d{2}$
+        in: query
+        name: season
+        required: false
+        description: Season label, e.g. 2025-26. Defaults to the current season.
+      - schema:
+          type: string
+        in: path
+        name: competition
+        required: true
+      - schema:
+          type: string
+        in: path
+        name: id
+        required: true
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                        slug:
+                          type: string
+                          nullable: true
+                        name:
+                          type: string
+                        photoUrl:
+                          type: string
+                        shortName:
+                          type: string
+                          nullable: true
+                        position:
+                          type: string
+                          nullable: true
+                        detailedPosition:
+                          type: string
+                          nullable: true
+                        birthdate:
+                          type: string
+                          nullable: true
+                        age:
+                          type: number
+                          nullable: true
+                        height:
+                          type: number
+                          nullable: true
+                        nationality:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            name:
+                              type: string
+                          required:
+                          - id
+                          - name
+                          additionalProperties: false
+                          nullable: true
+                        team:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            slug:
+                              type: string
+                              nullable: true
+                            name:
+                              type: string
+                            shortName:
+                              type: string
+                              nullable: true
+                            code:
+                              type: string
+                              nullable: true
+                            crestUrl:
+                              type: string
+                          required:
+                          - id
+                          - slug
+                          - name
+                          - shortName
+                          - code
+                          - crestUrl
+                          additionalProperties: false
+                          nullable: true
+                        shirtNumber:
+                          type: number
+                          nullable: true
+                      required:
+                      - id
+                      - slug
+                      - name
+                      - photoUrl
+                      - shortName
+                      - position
+                      - detailedPosition
+                      - birthdate
+                      - age
+                      - height
+                      - nationality
+                      - team
+                      - shirtNumber
+                      additionalProperties: false
+                  meta:
+                    type: object
+                    properties:
+                      season:
+                        type: string
+                      page:
+                        type: number
+                      limit:
+                        type: number
+                      total:
+                        type: number
+                    additionalProperties: false
+                required:
+                - data
+                - meta
+                additionalProperties: false
+  /{competition}/teams/{id}/matches:
+    get:
+      summary: A team's matches
+      tags:
+      - teams
+      description: Fixtures and results for one team, filterable by season and status.
+      parameters:
+      - schema:
+          type: string
+          pattern: ^\d{4}-\d{2}$
+        in: query
+        name: season
+        required: false
+        description: Season label, e.g. 2025-26. Defaults to the current season.
+      - schema:
+          type: string
+          enum:
+          - scheduled
+          - live
+          - halftime
+          - finished
+          - postponed
+          - cancelled
+        in: query
+        name: status
+        required: false
+      - schema:
+          type: string
+        in: path
+        name: competition
+        required: true
+      - schema:
+          type: string
+        in: path
+        name: id
+        required: true
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                        competition:
+                          type: string
+                        season:
+                          type: string
+                        stage:
+                          type: string
+                          nullable: true
+                        round:
+                          type: number
+                          nullable: true
+                        kickoff:
+                          type: string
+                          format: date-time
+                        status:
+                          type: string
+                          enum:
+                          - scheduled
+                          - live
+                          - halftime
+                          - finished
+                          - postponed
+                          - cancelled
+                        minute:
+                          type: number
+                          nullable: true
+                        homeTeam:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            slug:
+                              type: string
+                              nullable: true
+                            name:
+                              type: string
+                            shortName:
+                              type: string
+                              nullable: true
+                            code:
+                              type: string
+                              nullable: true
+                            crestUrl:
+                              type: string
+                          required:
+                          - id
+                          - slug
+                          - name
+                          - shortName
+                          - code
+                          - crestUrl
+                          additionalProperties: false
+                        awayTeam:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            slug:
+                              type: string
+                              nullable: true
+                            name:
+                              type: string
+                            shortName:
+                              type: string
+                              nullable: true
+                            code:
+                              type: string
+                              nullable: true
+                            crestUrl:
+                              type: string
+                          required:
+                          - id
+                          - slug
+                          - name
+                          - shortName
+                          - code
+                          - crestUrl
+                          additionalProperties: false
+                        score:
+                          type: object
+                          properties:
+                            home:
+                              type: number
+                              nullable: true
+                            away:
+                              type: number
+                              nullable: true
+                          required:
+                          - home
+                          - away
+                          additionalProperties: false
+                        venue:
+                          type: string
+                          nullable: true
+                      required:
+                      - id
+                      - competition
+                      - season
+                      - stage
+                      - round
+                      - kickoff
+                      - status
+                      - minute
+                      - homeTeam
+                      - awayTeam
+                      - score
+                      - venue
+                      additionalProperties: false
+                  meta:
+                    type: object
+                    properties:
+                      season:
+                        type: string
+                      page:
+                        type: number
+                      limit:
+                        type: number
+                      total:
+                        type: number
+                    additionalProperties: false
+                required:
+                - data
+                - meta
+                additionalProperties: false
+  /{competition}/teams/{id}/stats:
+    get:
+      summary: Team season statistics
+      tags:
+      - teams
+      description: Played, won, drawn, lost, goals for and against, clean sheets and cards for a season.
+      parameters:
+      - schema:
+          type: string
+          pattern: ^\d{4}-\d{2}$
+        in: query
+        name: season
+        required: false
+        description: Season label, e.g. 2025-26. Defaults to the current season.
+      - schema:
+          type: string
+        in: path
+        name: competition
+        required: true
+      - schema:
+          type: string
+        in: path
+        name: id
+        required: true
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      played:
+                        type: number
+                      won:
+                        type: number
+                      drawn:
+                        type: number
+                      lost:
+                        type: number
+                      goalsFor:
+                        type: number
+                      goalsAgainst:
+                        type: number
+                      cleanSheets:
+                        type: number
+                      yellowCards:
+                        type: number
+                      redCards:
+                        type: number
+                    required:
+                    - played
+                    - won
+                    - drawn
+                    - lost
+                    - goalsFor
+                    - goalsAgainst
+                    - cleanSheets
+                    - yellowCards
+                    - redCards
+                    additionalProperties: false
+                  meta:
+                    type: object
+                    properties:
+                      season:
+                        type: string
+                      page:
+                        type: number
+                      limit:
+                        type: number
+                      total:
+                        type: number
+                    additionalProperties: false
+                required:
+                - data
+                - meta
+                additionalProperties: false
+  /{competition}/teams/{id}/head-to-head/{otherId}:
+    get:
+      summary: Head to head
+      tags:
+      - teams
+      description: Every stored meeting between two teams, with a summary of wins, draws and goals on each side.
+      parameters:
+      - schema:
+          type: string
+        in: path
+        name: competition
+        required: true
+      - schema:
+          type: string
+        in: path
+        name: id
+        required: true
+      - schema:
+          type: string
+        in: path
+        name: otherId
+        required: true
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      teams:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            slug:
+                              type: string
+                              nullable: true
+                            name:
+                              type: string
+                            shortName:
+                              type: string
+                              nullable: true
+                            code:
+                              type: string
+                              nullable: true
+                            crestUrl:
+                              type: string
+                          required:
+                          - id
+                          - slug
+                          - name
+                          - shortName
+                          - code
+                          - crestUrl
+                          additionalProperties: false
+                        minItems: 2
+                        maxItems: 2
+                        description: The two teams, in the order given in the path
+                      summary:
+                        type: object
+                        properties:
+                          matches:
+                            type: number
+                          wins:
+                            type: array
+                            items:
+                              type: number
+                            minItems: 2
+                            maxItems: 2
+                            description: Wins for each team, same order as teams
+                          draws:
+                            type: number
+                          goals:
+                            type: array
+                            items:
+                              type: number
+                            minItems: 2
+                            maxItems: 2
+                            description: Goals scored by each team, same order as teams
+                        required:
+                        - matches
+                        - wins
+                        - draws
+                        - goals
+                        additionalProperties: false
+                      matches:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            competition:
+                              type: string
+                            season:
+                              type: string
+                            stage:
+                              type: string
+                              nullable: true
+                            round:
+                              type: number
+                              nullable: true
+                            kickoff:
+                              type: string
+                              format: date-time
+                            status:
+                              type: string
+                              enum:
+                              - scheduled
+                              - live
+                              - halftime
+                              - finished
+                              - postponed
+                              - cancelled
+                            minute:
+                              type: number
+                              nullable: true
+                            homeTeam:
+                              type: object
+                              properties:
+                                id:
+                                  type: number
+                                slug:
+                                  type: string
+                                  nullable: true
+                                name:
+                                  type: string
+                                shortName:
+                                  type: string
+                                  nullable: true
+                                code:
+                                  type: string
+                                  nullable: true
+                                crestUrl:
+                                  type: string
+                              required:
+                              - id
+                              - slug
+                              - name
+                              - shortName
+                              - code
+                              - crestUrl
+                              additionalProperties: false
+                            awayTeam:
+                              type: object
+                              properties:
+                                id:
+                                  type: number
+                                slug:
+                                  type: string
+                                  nullable: true
+                                name:
+                                  type: string
+                                shortName:
+                                  type: string
+                                  nullable: true
+                                code:
+                                  type: string
+                                  nullable: true
+                                crestUrl:
+                                  type: string
+                              required:
+                              - id
+                              - slug
+                              - name
+                              - shortName
+                              - code
+                              - crestUrl
+                              additionalProperties: false
+                            score:
+                              type: object
+                              properties:
+                                home:
+                                  type: number
+                                  nullable: true
+                                away:
+                                  type: number
+                                  nullable: true
+                              required:
+                              - home
+                              - away
+                              additionalProperties: false
+                            venue:
+                              type: string
+                              nullable: true
+                          required:
+                          - id
+                          - competition
+                          - season
+                          - stage
+                          - round
+                          - kickoff
+                          - status
+                          - minute
+                          - homeTeam
+                          - awayTeam
+                          - score
+                          - venue
+                          additionalProperties: false
+                    required:
+                    - teams
+                    - summary
+                    - matches
+                    additionalProperties: false
+                  meta:
+                    type: object
+                    properties:
+                      season:
+                        type: string
+                      page:
+                        type: number
+                      limit:
+                        type: number
+                      total:
+                        type: number
+                    additionalProperties: false
+                required:
+                - data
+                - meta
+                additionalProperties: false
+  /{competition}/players:
+    get:
+      summary: Players in a season
+      tags:
+      - players
+      description: Players appearing in this competition, filterable by team.
+      parameters:
+      - schema:
+          type: string
+          pattern: ^\d{4}-\d{2}$
+        in: query
+        name: season
+        required: false
+        description: Season label, e.g. 2025-26. Defaults to the current season.
+      - schema:
+          type: string
+        in: query
+        name: team
+        required: false
+      - schema:
+          type: string
+        in: query
+        name: position
+        required: false
+      - schema:
+          type: string
+        in: query
+        name: nationality
+        required: false
+      - schema:
+          type: integer
+          minimum: 1
+          default: 1
+        in: query
+        name: page
+        required: false
+      - schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 50
+        in: query
+        name: limit
+        required: false
+      - schema:
+          type: string
+        in: path
+        name: competition
+        required: true
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                        slug:
+                          type: string
+                          nullable: true
+                        name:
+                          type: string
+                        photoUrl:
+                          type: string
+                        shortName:
+                          type: string
+                          nullable: true
+                        position:
+                          type: string
+                          nullable: true
+                        detailedPosition:
+                          type: string
+                          nullable: true
+                        birthdate:
+                          type: string
+                          nullable: true
+                        age:
+                          type: number
+                          nullable: true
+                        height:
+                          type: number
+                          nullable: true
+                        nationality:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            name:
+                              type: string
+                          required:
+                          - id
+                          - name
+                          additionalProperties: false
+                          nullable: true
+                        team:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            slug:
+                              type: string
+                              nullable: true
+                            name:
+                              type: string
+                            shortName:
+                              type: string
+                              nullable: true
+                            code:
+                              type: string
+                              nullable: true
+                            crestUrl:
+                              type: string
+                          required:
+                          - id
+                          - slug
+                          - name
+                          - shortName
+                          - code
+                          - crestUrl
+                          additionalProperties: false
+                          nullable: true
+                        shirtNumber:
+                          type: number
+                          nullable: true
+                      required:
+                      - id
+                      - slug
+                      - name
+                      - photoUrl
+                      - shortName
+                      - position
+                      - detailedPosition
+                      - birthdate
+                      - age
+                      - height
+                      - nationality
+                      - team
+                      - shirtNumber
+                      additionalProperties: false
+                  meta:
+                    type: object
+                    properties:
+                      season:
+                        type: string
+                      page:
+                        type: number
+                      limit:
+                        type: number
+                      total:
+                        type: number
+                    additionalProperties: false
+                required:
+                - data
+                - meta
+                additionalProperties: false
+  /{competition}/players/{id}:
+    get:
+      summary: Player
+      tags:
+      - players
+      description: 'A player with their statistics for the season: appearances, minutes, goals, assists, cards and average rating.'
+      parameters:
+      - schema:
+          type: string
+          pattern: ^\d{4}-\d{2}$
+        in: query
+        name: season
+        required: false
+        description: Season label, e.g. 2025-26. Defaults to the current season.
+      - schema:
+          type: string
+        in: path
+        name: competition
+        required: true
+      - schema:
+          type: string
+        in: path
+        name: id
+        required: true
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                      slug:
+                        type: string
+                        nullable: true
+                      name:
+                        type: string
+                      photoUrl:
+                        type: string
+                      shortName:
+                        type: string
+                        nullable: true
+                      position:
+                        type: string
+                        nullable: true
+                      detailedPosition:
+                        type: string
+                        nullable: true
+                      birthdate:
+                        type: string
+                        nullable: true
+                      age:
+                        type: number
+                        nullable: true
+                      height:
+                        type: number
+                        nullable: true
+                      nationality:
+                        type: object
+                        properties:
+                          id:
+                            type: number
+                          name:
+                            type: string
+                        required:
+                        - id
+                        - name
+                        additionalProperties: false
+                        nullable: true
+                      team:
+                        type: object
+                        properties:
+                          id:
+                            type: number
+                          slug:
+                            type: string
+                            nullable: true
+                          name:
+                            type: string
+                          shortName:
+                            type: string
+                            nullable: true
+                          code:
+                            type: string
+                            nullable: true
+                          crestUrl:
+                            type: string
+                        required:
+                        - id
+                        - slug
+                        - name
+                        - shortName
+                        - code
+                        - crestUrl
+                        additionalProperties: false
+                        nullable: true
+                      shirtNumber:
+                        type: number
+                        nullable: true
+                      stats:
+                        type: object
+                        properties:
+                          appearances:
+                            type: number
+                          starts:
+                            type: number
+                          minutes:
+                            type: number
+                          goals:
+                            type: number
+                          assists:
+                            type: number
+                          penalties:
+                            type: number
+                          ownGoals:
+                            type: number
+                          yellowCards:
+                            type: number
+                          redCards:
+                            type: number
+                          avgRating:
+                            type: number
+                            nullable: true
+                        required:
+                        - appearances
+                        - starts
+                        - minutes
+                        - goals
+                        - assists
+                        - penalties
+                        - ownGoals
+                        - yellowCards
+                        - redCards
+                        - avgRating
+                        additionalProperties: false
+                        nullable: true
+                    required:
+                    - id
+                    - slug
+                    - name
+                    - photoUrl
+                    - shortName
+                    - position
+                    - detailedPosition
+                    - birthdate
+                    - age
+                    - height
+                    - nationality
+                    - team
+                    - shirtNumber
+                    - stats
+                    additionalProperties: false
+                  meta:
+                    type: object
+                    properties:
+                      season:
+                        type: string
+                      page:
+                        type: number
+                      limit:
+                        type: number
+                      total:
+                        type: number
+                    additionalProperties: false
+                required:
+                - data
+                - meta
+                additionalProperties: false
+  /{competition}/players/{id}/matches:
+    get:
+      summary: A player's matches
+      tags:
+      - players
+      description: Every match a player appeared in, with their minutes, rating and contributions.
+      parameters:
+      - schema:
+          type: string
+          pattern: ^\d{4}-\d{2}$
+        in: query
+        name: season
+        required: false
+        description: Season label, e.g. 2025-26. Defaults to the current season.
+      - schema:
+          type: string
+        in: path
+        name: competition
+        required: true
+      - schema:
+          type: string
+        in: path
+        name: id
+        required: true
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        match:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            competition:
+                              type: string
+                            season:
+                              type: string
+                            stage:
+                              type: string
+                              nullable: true
+                            round:
+                              type: number
+                              nullable: true
+                            kickoff:
+                              type: string
+                              format: date-time
+                            status:
+                              type: string
+                              enum:
+                              - scheduled
+                              - live
+                              - halftime
+                              - finished
+                              - postponed
+                              - cancelled
+                            minute:
+                              type: number
+                              nullable: true
+                            homeTeam:
+                              type: object
+                              properties:
+                                id:
+                                  type: number
+                                slug:
+                                  type: string
+                                  nullable: true
+                                name:
+                                  type: string
+                                shortName:
+                                  type: string
+                                  nullable: true
+                                code:
+                                  type: string
+                                  nullable: true
+                                crestUrl:
+                                  type: string
+                              required:
+                              - id
+                              - slug
+                              - name
+                              - shortName
+                              - code
+                              - crestUrl
+                              additionalProperties: false
+                            awayTeam:
+                              type: object
+                              properties:
+                                id:
+                                  type: number
+                                slug:
+                                  type: string
+                                  nullable: true
+                                name:
+                                  type: string
+                                shortName:
+                                  type: string
+                                  nullable: true
+                                code:
+                                  type: string
+                                  nullable: true
+                                crestUrl:
+                                  type: string
+                              required:
+                              - id
+                              - slug
+                              - name
+                              - shortName
+                              - code
+                              - crestUrl
+                              additionalProperties: false
+                            score:
+                              type: object
+                              properties:
+                                home:
+                                  type: number
+                                  nullable: true
+                                away:
+                                  type: number
+                                  nullable: true
+                              required:
+                              - home
+                              - away
+                              additionalProperties: false
+                            venue:
+                              type: string
+                              nullable: true
+                          required:
+                          - id
+                          - competition
+                          - season
+                          - stage
+                          - round
+                          - kickoff
+                          - status
+                          - minute
+                          - homeTeam
+                          - awayTeam
+                          - score
+                          - venue
+                          additionalProperties: false
+                        team:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            slug:
+                              type: string
+                              nullable: true
+                            name:
+                              type: string
+                            shortName:
+                              type: string
+                              nullable: true
+                            code:
+                              type: string
+                              nullable: true
+                            crestUrl:
+                              type: string
+                          required:
+                          - id
+                          - slug
+                          - name
+                          - shortName
+                          - code
+                          - crestUrl
+                          additionalProperties: false
+                        status:
+                          type: string
+                        minutes:
+                          type: number
+                          nullable: true
+                        rating:
+                          type: number
+                          nullable: true
+                        goals:
+                          type: number
+                        assists:
+                          type: number
+                      required:
+                      - match
+                      - team
+                      - status
+                      - minutes
+                      - rating
+                      - goals
+                      - assists
+                      additionalProperties: false
+                  meta:
+                    type: object
+                    properties:
+                      season:
+                        type: string
+                      page:
+                        type: number
+                      limit:
+                        type: number
+                      total:
+                        type: number
+                    additionalProperties: false
+                required:
+                - data
+                - meta
+                additionalProperties: false
+  /{competition}/matches:
+    get:
+      summary: Fixtures and results
+      tags:
+      - matches
+      description: Matches for a season, filterable by round, date range, status and team, with pagination.
+      parameters:
+      - schema:
+          type: string
+          pattern: ^\d{4}-\d{2}$
+        in: query
+        name: season
+        required: false
+        description: Season label, e.g. 2025-26. Defaults to the current season.
+      - schema:
+          type: integer
+        in: query
+        name: round
+        required: false
+      - schema:
+          type: string
+          pattern: ^\d{4}-\d{2}-\d{2}$
+        in: query
+        name: date
+        required: false
+      - schema:
+          type: string
+          pattern: ^\d{4}-\d{2}-\d{2}$
+        in: query
+        name: from
+        required: false
+      - schema:
+          type: string
+          pattern: ^\d{4}-\d{2}-\d{2}$
+        in: query
+        name: to
+        required: false
+      - schema:
+          type: string
+          enum:
+          - scheduled
+          - live
+          - halftime
+          - finished
+          - postponed
+          - cancelled
+        in: query
+        name: status
+        required: false
+      - schema:
+          type: string
+        in: query
+        name: team
+        required: false
+      - schema:
+          type: string
+        in: query
+        name: stage
+        required: false
+      - schema:
+          type: integer
+          minimum: 1
+          default: 1
+        in: query
+        name: page
+        required: false
+      - schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 50
+        in: query
+        name: limit
+        required: false
+      - schema:
+          type: string
+        in: path
+        name: competition
+        required: true
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                        competition:
+                          type: string
+                        season:
+                          type: string
+                        stage:
+                          type: string
+                          nullable: true
+                        round:
+                          type: number
+                          nullable: true
+                        kickoff:
+                          type: string
+                          format: date-time
+                        status:
+                          type: string
+                          enum:
+                          - scheduled
+                          - live
+                          - halftime
+                          - finished
+                          - postponed
+                          - cancelled
+                        minute:
+                          type: number
+                          nullable: true
+                        homeTeam:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            slug:
+                              type: string
+                              nullable: true
+                            name:
+                              type: string
+                            shortName:
+                              type: string
+                              nullable: true
+                            code:
+                              type: string
+                              nullable: true
+                            crestUrl:
+                              type: string
+                          required:
+                          - id
+                          - slug
+                          - name
+                          - shortName
+                          - code
+                          - crestUrl
+                          additionalProperties: false
+                        awayTeam:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            slug:
+                              type: string
+                              nullable: true
+                            name:
+                              type: string
+                            shortName:
+                              type: string
+                              nullable: true
+                            code:
+                              type: string
+                              nullable: true
+                            crestUrl:
+                              type: string
+                          required:
+                          - id
+                          - slug
+                          - name
+                          - shortName
+                          - code
+                          - crestUrl
+                          additionalProperties: false
+                        score:
+                          type: object
+                          properties:
+                            home:
+                              type: number
+                              nullable: true
+                            away:
+                              type: number
+                              nullable: true
+                          required:
+                          - home
+                          - away
+                          additionalProperties: false
+                        venue:
+                          type: string
+                          nullable: true
+                      required:
+                      - id
+                      - competition
+                      - season
+                      - stage
+                      - round
+                      - kickoff
+                      - status
+                      - minute
+                      - homeTeam
+                      - awayTeam
+                      - score
+                      - venue
+                      additionalProperties: false
+                  meta:
+                    type: object
+                    properties:
+                      season:
+                        type: string
+                      page:
+                        type: number
+                      limit:
+                        type: number
+                      total:
+                        type: number
+                    additionalProperties: false
+                required:
+                - data
+                - meta
+                additionalProperties: false
+  /{competition}/matches/live:
+    get:
+      summary: Live matches
+      tags:
+      - matches
+      description: Matches in play right now, with the score and the minute. Updated every 30 seconds.
+      parameters:
+      - schema:
+          type: string
+        in: path
+        name: competition
+        required: true
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                        competition:
+                          type: string
+                        season:
+                          type: string
+                        stage:
+                          type: string
+                          nullable: true
+                        round:
+                          type: number
+                          nullable: true
+                        kickoff:
+                          type: string
+                          format: date-time
+                        status:
+                          type: string
+                          enum:
+                          - scheduled
+                          - live
+                          - halftime
+                          - finished
+                          - postponed
+                          - cancelled
+                        minute:
+                          type: number
+                          nullable: true
+                        homeTeam:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            slug:
+                              type: string
+                              nullable: true
+                            name:
+                              type: string
+                            shortName:
+                              type: string
+                              nullable: true
+                            code:
+                              type: string
+                              nullable: true
+                            crestUrl:
+                              type: string
+                          required:
+                          - id
+                          - slug
+                          - name
+                          - shortName
+                          - code
+                          - crestUrl
+                          additionalProperties: false
+                        awayTeam:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            slug:
+                              type: string
+                              nullable: true
+                            name:
+                              type: string
+                            shortName:
+                              type: string
+                              nullable: true
+                            code:
+                              type: string
+                              nullable: true
+                            crestUrl:
+                              type: string
+                          required:
+                          - id
+                          - slug
+                          - name
+                          - shortName
+                          - code
+                          - crestUrl
+                          additionalProperties: false
+                        score:
+                          type: object
+                          properties:
+                            home:
+                              type: number
+                              nullable: true
+                            away:
+                              type: number
+                              nullable: true
+                          required:
+                          - home
+                          - away
+                          additionalProperties: false
+                        venue:
+                          type: string
+                          nullable: true
+                      required:
+                      - id
+                      - competition
+                      - season
+                      - stage
+                      - round
+                      - kickoff
+                      - status
+                      - minute
+                      - homeTeam
+                      - awayTeam
+                      - score
+                      - venue
+                      additionalProperties: false
+                  meta:
+                    type: object
+                    properties:
+                      season:
+                        type: string
+                      page:
+                        type: number
+                      limit:
+                        type: number
+                      total:
+                        type: number
+                    additionalProperties: false
+                required:
+                - data
+                - meta
+                additionalProperties: false
+  /{competition}/matches/today:
+    get:
+      summary: Today's matches
+      tags:
+      - matches
+      description: Every match kicking off today, whatever its status.
+      parameters:
+      - schema:
+          type: string
+        in: path
+        name: competition
+        required: true
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                        competition:
+                          type: string
+                        season:
+                          type: string
+                        stage:
+                          type: string
+                          nullable: true
+                        round:
+                          type: number
+                          nullable: true
+                        kickoff:
+                          type: string
+                          format: date-time
+                        status:
+                          type: string
+                          enum:
+                          - scheduled
+                          - live
+                          - halftime
+                          - finished
+                          - postponed
+                          - cancelled
+                        minute:
+                          type: number
+                          nullable: true
+                        homeTeam:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            slug:
+                              type: string
+                              nullable: true
+                            name:
+                              type: string
+                            shortName:
+                              type: string
+                              nullable: true
+                            code:
+                              type: string
+                              nullable: true
+                            crestUrl:
+                              type: string
+                          required:
+                          - id
+                          - slug
+                          - name
+                          - shortName
+                          - code
+                          - crestUrl
+                          additionalProperties: false
+                        awayTeam:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            slug:
+                              type: string
+                              nullable: true
+                            name:
+                              type: string
+                            shortName:
+                              type: string
+                              nullable: true
+                            code:
+                              type: string
+                              nullable: true
+                            crestUrl:
+                              type: string
+                          required:
+                          - id
+                          - slug
+                          - name
+                          - shortName
+                          - code
+                          - crestUrl
+                          additionalProperties: false
+                        score:
+                          type: object
+                          properties:
+                            home:
+                              type: number
+                              nullable: true
+                            away:
+                              type: number
+                              nullable: true
+                          required:
+                          - home
+                          - away
+                          additionalProperties: false
+                        venue:
+                          type: string
+                          nullable: true
+                      required:
+                      - id
+                      - competition
+                      - season
+                      - stage
+                      - round
+                      - kickoff
+                      - status
+                      - minute
+                      - homeTeam
+                      - awayTeam
+                      - score
+                      - venue
+                      additionalProperties: false
+                  meta:
+                    type: object
+                    properties:
+                      season:
+                        type: string
+                      page:
+                        type: number
+                      limit:
+                        type: number
+                      total:
+                        type: number
+                    additionalProperties: false
+                required:
+                - data
+                - meta
+                additionalProperties: false
+  /{competition}/matches/next:
+    get:
+      summary: Next fixtures
+      tags:
+      - matches
+      description: The matches coming up next, soonest first.
+      parameters:
+      - schema:
+          type: string
+        in: path
+        name: competition
+        required: true
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: number
+                        competition:
+                          type: string
+                        season:
+                          type: string
+                        stage:
+                          type: string
+                          nullable: true
+                        round:
+                          type: number
+                          nullable: true
+                        kickoff:
+                          type: string
+                          format: date-time
+                        status:
+                          type: string
+                          enum:
+                          - scheduled
+                          - live
+                          - halftime
+                          - finished
+                          - postponed
+                          - cancelled
+                        minute:
+                          type: number
+                          nullable: true
+                        homeTeam:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            slug:
+                              type: string
+                              nullable: true
+                            name:
+                              type: string
+                            shortName:
+                              type: string
+                              nullable: true
+                            code:
+                              type: string
+                              nullable: true
+                            crestUrl:
+                              type: string
+                          required:
+                          - id
+                          - slug
+                          - name
+                          - shortName
+                          - code
+                          - crestUrl
+                          additionalProperties: false
+                        awayTeam:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            slug:
+                              type: string
+                              nullable: true
+                            name:
+                              type: string
+                            shortName:
+                              type: string
+                              nullable: true
+                            code:
+                              type: string
+                              nullable: true
+                            crestUrl:
+                              type: string
+                          required:
+                          - id
+                          - slug
+                          - name
+                          - shortName
+                          - code
+                          - crestUrl
+                          additionalProperties: false
+                        score:
+                          type: object
+                          properties:
+                            home:
+                              type: number
+                              nullable: true
+                            away:
+                              type: number
+                              nullable: true
+                          required:
+                          - home
+                          - away
+                          additionalProperties: false
+                        venue:
+                          type: string
+                          nullable: true
+                      required:
+                      - id
+                      - competition
+                      - season
+                      - stage
+                      - round
+                      - kickoff
+                      - status
+                      - minute
+                      - homeTeam
+                      - awayTeam
+                      - score
+                      - venue
+                      additionalProperties: false
+                  meta:
+                    type: object
+                    properties:
+                      season:
+                        type: string
+                      page:
+                        type: number
+                      limit:
+                        type: number
+                      total:
+                        type: number
+                    additionalProperties: false
+                required:
+                - data
+                - meta
+                additionalProperties: false
+  /{competition}/matches/{id}:
+    get:
+      summary: Match detail
+      tags:
+      - matches
+      description: 'One match in full: score, status, minute, venue, referee, both lineups with formations and per-player ratings, substitutions and the timeline of events.'
+      parameters:
+      - schema:
+          type: string
+        in: path
+        name: competition
+        required: true
+      - schema:
+          type: string
+        in: path
+        name: id
+        required: true
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: number
+                      competition:
+                        type: string
+                      season:
+                        type: string
+                      stage:
+                        type: string
+                        nullable: true
+                      round:
+                        type: number
+                        nullable: true
+                      kickoff:
+                        type: string
+                        format: date-time
+                      status:
+                        type: string
+                        enum:
+                        - scheduled
+                        - live
+                        - halftime
+                        - finished
+                        - postponed
+                        - cancelled
+                      minute:
+                        type: number
+                        nullable: true
+                      homeTeam:
+                        type: object
+                        properties:
+                          id:
+                            type: number
+                          slug:
+                            type: string
+                            nullable: true
+                          name:
+                            type: string
+                          shortName:
+                            type: string
+                            nullable: true
+                          code:
+                            type: string
+                            nullable: true
+                          crestUrl:
+                            type: string
+                        required:
+                        - id
+                        - slug
+                        - name
+                        - shortName
+                        - code
+                        - crestUrl
+                        additionalProperties: false
+                      awayTeam:
+                        type: object
+                        properties:
+                          id:
+                            type: number
+                          slug:
+                            type: string
+                            nullable: true
+                          name:
+                            type: string
+                          shortName:
+                            type: string
+                            nullable: true
+                          code:
+                            type: string
+                            nullable: true
+                          crestUrl:
+                            type: string
+                        required:
+                        - id
+                        - slug
+                        - name
+                        - shortName
+                        - code
+                        - crestUrl
+                        additionalProperties: false
+                      score:
+                        type: object
+                        properties:
+                          home:
+                            type: number
+                            nullable: true
+                          away:
+                            type: number
+                            nullable: true
+                        required:
+                        - home
+                        - away
+                        additionalProperties: false
+                      venue:
+                        type: string
+                        nullable: true
+                      referee:
+                        type: string
+                        nullable: true
+                      playedMinutes:
+                        type: number
+                        nullable: true
+                      lineups:
+                        type: object
+                        properties:
+                          home:
+                            type: object
+                            properties:
+                              formation:
+                                type: string
+                                nullable: true
+                              starting:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    player:
+                                      type: object
+                                      properties:
+                                        id:
+                                          type: number
+                                        slug:
+                                          type: string
+                                          nullable: true
+                                        name:
+                                          type: string
+                                        photoUrl:
+                                          type: string
+                                      required:
+                                      - id
+                                      - slug
+                                      - name
+                                      - photoUrl
+                                      additionalProperties: false
+                                    shirtNumber:
+                                      type: number
+                                      nullable: true
+                                    position:
+                                      type: string
+                                      nullable: true
+                                    minutes:
+                                      type: number
+                                      nullable: true
+                                    rating:
+                                      type: number
+                                      nullable: true
+                                    goals:
+                                      type: number
+                                    assists:
+                                      type: number
+                                    stats:
+                                      type: object
+                                      additionalProperties:
+                                        type: string
+                                  required:
+                                  - player
+                                  - shirtNumber
+                                  - position
+                                  - minutes
+                                  - rating
+                                  - goals
+                                  - assists
+                                  - stats
+                                  additionalProperties: false
+                              bench:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    player:
+                                      type: object
+                                      properties:
+                                        id:
+                                          type: number
+                                        slug:
+                                          type: string
+                                          nullable: true
+                                        name:
+                                          type: string
+                                        photoUrl:
+                                          type: string
+                                      required:
+                                      - id
+                                      - slug
+                                      - name
+                                      - photoUrl
+                                      additionalProperties: false
+                                    shirtNumber:
+                                      type: number
+                                      nullable: true
+                                    position:
+                                      type: string
+                                      nullable: true
+                                    minutes:
+                                      type: number
+                                      nullable: true
+                                    rating:
+                                      type: number
+                                      nullable: true
+                                    goals:
+                                      type: number
+                                    assists:
+                                      type: number
+                                    stats:
+                                      type: object
+                                      additionalProperties:
+                                        type: string
+                                  required:
+                                  - player
+                                  - shirtNumber
+                                  - position
+                                  - minutes
+                                  - rating
+                                  - goals
+                                  - assists
+                                  - stats
+                                  additionalProperties: false
+                            required:
+                            - formation
+                            - starting
+                            - bench
+                            additionalProperties: false
+                          away:
+                            type: object
+                            properties:
+                              formation:
+                                type: string
+                                nullable: true
+                              starting:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    player:
+                                      type: object
+                                      properties:
+                                        id:
+                                          type: number
+                                        slug:
+                                          type: string
+                                          nullable: true
+                                        name:
+                                          type: string
+                                        photoUrl:
+                                          type: string
+                                      required:
+                                      - id
+                                      - slug
+                                      - name
+                                      - photoUrl
+                                      additionalProperties: false
+                                    shirtNumber:
+                                      type: number
+                                      nullable: true
+                                    position:
+                                      type: string
+                                      nullable: true
+                                    minutes:
+                                      type: number
+                                      nullable: true
+                                    rating:
+                                      type: number
+                                      nullable: true
+                                    goals:
+                                      type: number
+                                    assists:
+                                      type: number
+                                    stats:
+                                      type: object
+                                      additionalProperties:
+                                        type: string
+                                  required:
+                                  - player
+                                  - shirtNumber
+                                  - position
+                                  - minutes
+                                  - rating
+                                  - goals
+                                  - assists
+                                  - stats
+                                  additionalProperties: false
+                              bench:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    player:
+                                      type: object
+                                      properties:
+                                        id:
+                                          type: number
+                                        slug:
+                                          type: string
+                                          nullable: true
+                                        name:
+                                          type: string
+                                        photoUrl:
+                                          type: string
+                                      required:
+                                      - id
+                                      - slug
+                                      - name
+                                      - photoUrl
+                                      additionalProperties: false
+                                    shirtNumber:
+                                      type: number
+                                      nullable: true
+                                    position:
+                                      type: string
+                                      nullable: true
+                                    minutes:
+                                      type: number
+                                      nullable: true
+                                    rating:
+                                      type: number
+                                      nullable: true
+                                    goals:
+                                      type: number
+                                    assists:
+                                      type: number
+                                    stats:
+                                      type: object
+                                      additionalProperties:
+                                        type: string
+                                  required:
+                                  - player
+                                  - shirtNumber
+                                  - position
+                                  - minutes
+                                  - rating
+                                  - goals
+                                  - assists
+                                  - stats
+                                  additionalProperties: false
+                            required:
+                            - formation
+                            - starting
+                            - bench
+                            additionalProperties: false
+                        required:
+                        - home
+                        - away
+                        additionalProperties: false
+                        nullable: true
+                      events:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            minute:
+                              type: number
+                            addedTime:
+                              type: number
+                            type:
+                              type: string
+                              enum:
+                              - goal
+                              - yellow_card
+                              - red_card
+                              - substitution
+                              - other
+                            subtype:
+                              type: string
+                              nullable: true
+                            label:
+                              type: string
+                            teamId:
+                              type: number
+                            player:
+                              type: object
+                              properties:
+                                id:
+                                  type: number
+                                slug:
+                                  type: string
+                                  nullable: true
+                                name:
+                                  type: string
+                                photoUrl:
+                                  type: string
+                              required:
+                              - id
+                              - slug
+                              - name
+                              - photoUrl
+                              additionalProperties: false
+                              nullable: true
+                            secondaryPlayer:
+                              type: object
+                              properties:
+                                id:
+                                  type: number
+                                slug:
+                                  type: string
+                                  nullable: true
+                                name:
+                                  type: string
+                                photoUrl:
+                                  type: string
+                              required:
+                              - id
+                              - slug
+                              - name
+                              - photoUrl
+                              additionalProperties: false
+                              nullable: true
+                          required:
+                          - minute
+                          - addedTime
+                          - type
+                          - subtype
+                          - label
+                          - teamId
+                          - player
+                          - secondaryPlayer
+                          additionalProperties: false
+                    required:
+                    - id
+                    - competition
+                    - season
+                    - stage
+                    - round
+                    - kickoff
+                    - status
+                    - minute
+                    - homeTeam
+                    - awayTeam
+                    - score
+                    - venue
+                    - referee
+                    - playedMinutes
+                    - lineups
+                    - events
+                    additionalProperties: false
+                  meta:
+                    type: object
+                    properties:
+                      season:
+                        type: string
+                      page:
+                        type: number
+                      limit:
+                        type: number
+                      total:
+                        type: number
+                    additionalProperties: false
+                required:
+                - data
+                - meta
+                additionalProperties: false
+  /{competition}/stats/top-scorers:
+    get:
+      summary: Top scorers
+      tags:
+      - stats
+      description: Players ranked by goals scored in the season, penalties included.
+      parameters:
+      - schema:
+          type: string
+          pattern: ^\d{4}-\d{2}$
+        in: query
+        name: season
+        required: false
+        description: Season label, e.g. 2025-26. Defaults to the current season.
+      - schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 20
+        in: query
+        name: limit
+        required: false
+      - schema:
+          type: string
+        in: path
+        name: competition
+        required: true
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        rank:
+                          type: number
+                        player:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            slug:
+                              type: string
+                              nullable: true
+                            name:
+                              type: string
+                            photoUrl:
+                              type: string
+                          required:
+                          - id
+                          - slug
+                          - name
+                          - photoUrl
+                          additionalProperties: false
+                        team:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            slug:
+                              type: string
+                              nullable: true
+                            name:
+                              type: string
+                            shortName:
+                              type: string
+                              nullable: true
+                            code:
+                              type: string
+                              nullable: true
+                            crestUrl:
+                              type: string
+                          required:
+                          - id
+                          - slug
+                          - name
+                          - shortName
+                          - code
+                          - crestUrl
+                          additionalProperties: false
+                        value:
+                          type: number
+                        stats:
+                          type: object
+                          properties:
+                            appearances:
+                              type: number
+                            starts:
+                              type: number
+                            minutes:
+                              type: number
+                            goals:
+                              type: number
+                            assists:
+                              type: number
+                            penalties:
+                              type: number
+                            ownGoals:
+                              type: number
+                            yellowCards:
+                              type: number
+                            redCards:
+                              type: number
+                            avgRating:
+                              type: number
+                              nullable: true
+                          required:
+                          - appearances
+                          - starts
+                          - minutes
+                          - goals
+                          - assists
+                          - penalties
+                          - ownGoals
+                          - yellowCards
+                          - redCards
+                          - avgRating
+                          additionalProperties: false
+                      required:
+                      - rank
+                      - player
+                      - team
+                      - value
+                      - stats
+                      additionalProperties: false
+                  meta:
+                    type: object
+                    properties:
+                      season:
+                        type: string
+                      page:
+                        type: number
+                      limit:
+                        type: number
+                      total:
+                        type: number
+                    additionalProperties: false
+                required:
+                - data
+                - meta
+                additionalProperties: false
+  /{competition}/stats/top-assists:
+    get:
+      summary: Top assists
+      tags:
+      - stats
+      description: Players ranked by assists in the season.
+      parameters:
+      - schema:
+          type: string
+          pattern: ^\d{4}-\d{2}$
+        in: query
+        name: season
+        required: false
+        description: Season label, e.g. 2025-26. Defaults to the current season.
+      - schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 20
+        in: query
+        name: limit
+        required: false
+      - schema:
+          type: string
+        in: path
+        name: competition
+        required: true
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        rank:
+                          type: number
+                        player:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            slug:
+                              type: string
+                              nullable: true
+                            name:
+                              type: string
+                            photoUrl:
+                              type: string
+                          required:
+                          - id
+                          - slug
+                          - name
+                          - photoUrl
+                          additionalProperties: false
+                        team:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            slug:
+                              type: string
+                              nullable: true
+                            name:
+                              type: string
+                            shortName:
+                              type: string
+                              nullable: true
+                            code:
+                              type: string
+                              nullable: true
+                            crestUrl:
+                              type: string
+                          required:
+                          - id
+                          - slug
+                          - name
+                          - shortName
+                          - code
+                          - crestUrl
+                          additionalProperties: false
+                        value:
+                          type: number
+                        stats:
+                          type: object
+                          properties:
+                            appearances:
+                              type: number
+                            starts:
+                              type: number
+                            minutes:
+                              type: number
+                            goals:
+                              type: number
+                            assists:
+                              type: number
+                            penalties:
+                              type: number
+                            ownGoals:
+                              type: number
+                            yellowCards:
+                              type: number
+                            redCards:
+                              type: number
+                            avgRating:
+                              type: number
+                              nullable: true
+                          required:
+                          - appearances
+                          - starts
+                          - minutes
+                          - goals
+                          - assists
+                          - penalties
+                          - ownGoals
+                          - yellowCards
+                          - redCards
+                          - avgRating
+                          additionalProperties: false
+                      required:
+                      - rank
+                      - player
+                      - team
+                      - value
+                      - stats
+                      additionalProperties: false
+                  meta:
+                    type: object
+                    properties:
+                      season:
+                        type: string
+                      page:
+                        type: number
+                      limit:
+                        type: number
+                      total:
+                        type: number
+                    additionalProperties: false
+                required:
+                - data
+                - meta
+                additionalProperties: false
+  /{competition}/stats/cards:
+    get:
+      summary: Most cards (yellow = 1, red = 3)
+      tags:
+      - stats
+      description: Players ranked by disciplinary points, a yellow counting one and a red three.
+      parameters:
+      - schema:
+          type: string
+          pattern: ^\d{4}-\d{2}$
+        in: query
+        name: season
+        required: false
+        description: Season label, e.g. 2025-26. Defaults to the current season.
+      - schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 20
+        in: query
+        name: limit
+        required: false
+      - schema:
+          type: string
+        in: path
+        name: competition
+        required: true
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        rank:
+                          type: number
+                        player:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            slug:
+                              type: string
+                              nullable: true
+                            name:
+                              type: string
+                            photoUrl:
+                              type: string
+                          required:
+                          - id
+                          - slug
+                          - name
+                          - photoUrl
+                          additionalProperties: false
+                        team:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            slug:
+                              type: string
+                              nullable: true
+                            name:
+                              type: string
+                            shortName:
+                              type: string
+                              nullable: true
+                            code:
+                              type: string
+                              nullable: true
+                            crestUrl:
+                              type: string
+                          required:
+                          - id
+                          - slug
+                          - name
+                          - shortName
+                          - code
+                          - crestUrl
+                          additionalProperties: false
+                        value:
+                          type: number
+                        stats:
+                          type: object
+                          properties:
+                            appearances:
+                              type: number
+                            starts:
+                              type: number
+                            minutes:
+                              type: number
+                            goals:
+                              type: number
+                            assists:
+                              type: number
+                            penalties:
+                              type: number
+                            ownGoals:
+                              type: number
+                            yellowCards:
+                              type: number
+                            redCards:
+                              type: number
+                            avgRating:
+                              type: number
+                              nullable: true
+                          required:
+                          - appearances
+                          - starts
+                          - minutes
+                          - goals
+                          - assists
+                          - penalties
+                          - ownGoals
+                          - yellowCards
+                          - redCards
+                          - avgRating
+                          additionalProperties: false
+                      required:
+                      - rank
+                      - player
+                      - team
+                      - value
+                      - stats
+                      additionalProperties: false
+                  meta:
+                    type: object
+                    properties:
+                      season:
+                        type: string
+                      page:
+                        type: number
+                      limit:
+                        type: number
+                      total:
+                        type: number
+                    additionalProperties: false
+                required:
+                - data
+                - meta
+                additionalProperties: false
+  /{competition}/stats/ratings:
+    get:
+      summary: Best average rating (min. 5 appearances)
+      tags:
+      - stats
+      description: Players ranked by average match rating, counting only those with at least five appearances.
+      parameters:
+      - schema:
+          type: string
+          pattern: ^\d{4}-\d{2}$
+        in: query
+        name: season
+        required: false
+        description: Season label, e.g. 2025-26. Defaults to the current season.
+      - schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 20
+        in: query
+        name: limit
+        required: false
+      - schema:
+          type: string
+        in: path
+        name: competition
+        required: true
+      responses:
+        '200':
+          description: Default Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        rank:
+                          type: number
+                        player:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            slug:
+                              type: string
+                              nullable: true
+                            name:
+                              type: string
+                            photoUrl:
+                              type: string
+                          required:
+                          - id
+                          - slug
+                          - name
+                          - photoUrl
+                          additionalProperties: false
+                        team:
+                          type: object
+                          properties:
+                            id:
+                              type: number
+                            slug:
+                              type: string
+                              nullable: true
+                            name:
+                              type: string
+                            shortName:
+                              type: string
+                              nullable: true
+                            code:
+                              type: string
+                              nullable: true
+                            crestUrl:
+                              type: string
+                          required:
+                          - id
+                          - slug
+                          - name
+                          - shortName
+                          - code
+                          - crestUrl
+                          additionalProperties: false
+                        value:
+                          type: number
+                        stats:
+                          type: object
+                          properties:
+                            appearances:
+                              type: number
+                            starts:
+                              type: number
+                            minutes:
+                              type: number
+                            goals:
+                              type: number
+                            assists:
+                              type: number
+                            penalties:
+                              type: number
+                            ownGoals:
+                              type: number
+                            yellowCards:
+                              type: number
+                            redCards:
+                              type: number
+                            avgRating:
+                              type: number
+                              nullable: true
+                          required:
+                          - appearances
+                          - starts
+                          - minutes
+                          - goals
+                          - assists
+                          - penalties
+                          - ownGoals
+                          - yellowCards
+                          - redCards
+                          - avgRating
+                          additionalProperties: false
+                      required:
+                      - rank
+                      - player
+                      - team
+                      - value
+                      - stats
+                      additionalProperties: false
+                  meta:
+                    type: object
+                    properties:
+                      season:
+                        type: string
+                      page:
+                        type: number
+                      limit:
+                        type: number
+                      total:
+                        type: number
+                    additionalProperties: false
+                required:
+                - data
+                - meta
+                additionalProperties: false
+servers:
+- url: https://football-leagues1.p.rapidapi.com
+  description: RapidAPI, every competition
+- url: /v1
+  description: Origin, for keys issued directly
+security:
+- rapidApiKey: []
+  rapidApiHost: []
+- apiKey: []

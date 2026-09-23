@@ -1,0 +1,41 @@
+name: Football API (Yuvron) conventions
+generated: '2026-09-23'
+method: searched
+source: https://football-api.yuvron.online/llms.txt
+auth:
+  style: API key headers
+  headers:
+  - X-RapidAPI-Key
+  - X-RapidAPI-Host
+  direct: X-Api-Key (origin /v1)
+  see: authentication/yuvron-authentication.yml
+envelope:
+  success: '{ data, meta }'
+  error: '{ error: { code, message } } with the HTTP status set'
+  source: https://football-api.yuvron.online/faq
+timestamps: UTC ISO 8601
+identifiers: Teams and players have stable numeric ids (plus a slug and image URL).
+pagination:
+  style: page-number
+  params:
+  - page
+  - limit
+  evidence: GET /{competition}/matches query parameters in openapi/yuvron-openapi.yml
+season_scoping: Season-scoped endpoints accept ?season=2025-26 and default to the current season.
+caching:
+  cache_control: Live scores max-age=15; fixtures, results, standings max-age=300
+  etag: Responses carry an ETag; If-None-Match returns 304 Not Modified, which saves bandwidth but not quota.
+  source: https://football-api.yuvron.online/blog/not-burning-your-free-tier
+versioning:
+  style: path
+  current: v1
+  evidence: origin server /v1; info.version 1.0.0
+rate_limit_signaling: Not documented; quota is enforced by RapidAPI per plan (rate-limits/yuvron-rate-limits.yml).
+idempotency:
+  coverage: na
+  note: 'The API is read-only: "There are no write endpoints and no user accounts." (llms.txt). All 24 operations are GET.'
+reversibility:
+  coverage: na
+  note: Read-only API; no write surface to reverse.
+dry_run:
+  coverage: na
